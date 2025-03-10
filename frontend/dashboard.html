@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Moderno - Gerenciamento de Clientes</title>
+  <link rel="stylesheet" href="styledash.css">
+</head>
+<body>
+    <div class="cards-container">
+        <div class="card" data-category="vencidos">
+           <h2>Clientes Vencidos</h2>
+           <p class="count"></p>
+        </div>
+        <div class="card" data-category="vence3">
+           <h2>Clientes que Vão Vencer em 3 dias</h2>
+           <p class="count"></p>
+        </div>
+        <div class="card" data-category="emdias">
+           <h2>Clientes em Dias</h2>
+           <p class="count"></p>
+        </div>
+        <div class="card" data-category="custoTotal">
+           <h2>Custo Total</h2>
+           <p class="count"></p>
+        </div>
+        <div class="card" data-category="valorApurado">
+           <h2>Valor Apurado</h2>
+           <p class="count"></p>
+        </div>
+        <div class="card" data-category="lucro">
+           <h2>Lucro</h2>
+           <p class="count"></p>
+        </div>
+        <div class="card" data-category="cadastro">
+           <h2>Cadastro de Cliente</h2>
+        </div>
+      </div>
+      
+      
+
+  <!-- Modal para exibição dos clientes ou formulário de cadastro -->
+  <div id="modal" class="modal">
+     <div class="modal-content">
+       <span class="close-btn">&times;</span>
+       <div id="modal-body">
+         <!-- Conteúdo carregado dinamicamente -->
+       </div>
+     </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
