@@ -97,12 +97,12 @@
 .card[data-category="vencidos"]:hover,
 .card[data-category="vence3"]:hover,
 .card[data-category="emdias"]:hover,
-.card[data-category="cadastro"]:hover {
+.card[data-category="totalClientes"]:hover {
   animation: borderShimmer 1s infinite;
 }
 
 /* Garantir que outros cards não tenham efeito hover */
-.card:not([data-category="vencidos"]):not([data-category="vence3"]):not([data-category="emdias"]):not([data-category="cadastro"]):hover {
+.card:not([data-category="vencidos"]):not([data-category="vence3"]):not([data-category="emdias"]):not([data-category="cadastro"]):not([data-category="totalClientes"]):hover {
   transform: none;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
