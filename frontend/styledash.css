@@ -503,3 +503,41 @@ button.excluir {
   background-color: #d32f2f;
   color: white;
 }
+/* Estilo para o container do campo de pesquisa */
+#search-container {
+  margin: 20px auto;
+  width: 100%;
+  max-width: 300px; /* largura máxima para desktops */
+  max-height: 40px;
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Estilo para o input de pesquisa */
+#searchInput {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  transition: border-color 0.3s ease;
+}
+
+#searchInput:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Adaptações para dispositivos móveis */
+@media (max-width: 768px) {
+  #search-container {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  #searchInput {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+}
