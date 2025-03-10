@@ -396,61 +396,47 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Função para atualizar os cards da tela inicial com contagens e totais
 async function updateDashboardCounts() {
     await fetchClients(); // Busca a lista de clientes do backend
-  
-    // Filtra os clientes conforme os critérios atuais (para os cards de status)
+
+    // Contagens e totais
     const vencidosCount = filterVencidos(clients).length;
     const vence3Count = filterVence3(clients).length;
     const emdiasCount = filterEmDias(clients).length;
-    
-    // Calcula os totais a partir dos campos "valor_cobrado" e "custo"
     const custoTotal = clients.reduce((sum, client) => sum + parseFloat(client.custo), 0);
     const valorApurado = clients.reduce((sum, client) => sum + parseFloat(client.valor_cobrado), 0);
     const lucro = valorApurado - custoTotal;
-  
-    // Atualiza os cards com os respectivos valores
+
+    // Atualização dos cards existentes
     const vencidosCard = document.querySelector('.card[data-category="vencidos"]');
     if (vencidosCard) {
-      vencidosCard.innerHTML = `
-        <h2>Clientes Vencidos</h2>
-        <p class="count">${vencidosCount}</p>
-      `;
+      vencidosCard.innerHTML = `<h2>Clientes Vencidos</h2><p class="count">${vencidosCount}</p>`;
     }
     const vence3Card = document.querySelector('.card[data-category="vence3"]');
     if (vence3Card) {
-      vence3Card.innerHTML = `
-        <h2>Clientes que Vão Vencer em 3 dias</h2>
-        <p class="count">${vence3Count}</p>
-      `;
+      vence3Card.innerHTML = `<h2>Clientes que Vão Vencer em 3 dias</h2><p class="count">${vence3Count}</p>`;
     }
     const emdiasCard = document.querySelector('.card[data-category="emdias"]');
     if (emdiasCard) {
-      emdiasCard.innerHTML = `
-        <h2>Clientes em Dias</h2>
-        <p class="count">${emdiasCount}</p>
-      `;
+      emdiasCard.innerHTML = `<h2>Clientes em Dias</h2><p class="count">${emdiasCount}</p>`;
     }
     const custoTotalCard = document.querySelector('.card[data-category="custoTotal"]');
     if (custoTotalCard) {
-      custoTotalCard.innerHTML = `
-        <h2>Custo Total</h2>
-        <p class="count">R$${custoTotal.toFixed(2)}</p>
-      `;
+      custoTotalCard.innerHTML = `<h2>Custo Total</h2><p class="count">R$${custoTotal.toFixed(2)}</p>`;
     }
     const valorApuradoCard = document.querySelector('.card[data-category="valorApurado"]');
     if (valorApuradoCard) {
-      valorApuradoCard.innerHTML = `
-        <h2>Valor Apurado</h2>
-        <p class="count">R$${valorApurado.toFixed(2)}</p>
-      `;
+      valorApuradoCard.innerHTML = `<h2>Valor Apurado</h2><p class="count">R$${valorApurado.toFixed(2)}</p>`;
     }
     const lucroCard = document.querySelector('.card[data-category="lucro"]');
     if (lucroCard) {
-      lucroCard.innerHTML = `
-        <h2>Lucro</h2>
-        <p class="count">R$${lucro.toFixed(2)}</p>
-      `;
+      lucroCard.innerHTML = `<h2>Lucro</h2><p class="count">R$${lucro.toFixed(2)}</p>`;
     }
-  }
+    // Novo card: Total de Clientes
+    const totalClientesCard = document.querySelector('.card[data-category="totalClientes"]');
+    if (totalClientesCard) {
+      totalClientesCard.innerHTML = `<h2>Total de Clientes</h2><p class="count">${clients.length}</p>`;
+    }
+}
+
   
   
   // Chama a função ao carregar o DOM
