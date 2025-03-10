@@ -420,15 +420,15 @@ async function updateDashboardCounts() {
     // Atualização dos cards existentes
     const vencidosCard = document.querySelector('.card[data-category="vencidos"]');
     if (vencidosCard) {
-      vencidosCard.innerHTML = `<h2>Clientes Vencidos</h2><p class="count">${vencidosCount}</p>`;
+      vencidosCard.innerHTML = `<h2>Vencidos</h2><p class="count">${vencidosCount}</p>`;
     }
     const vence3Card = document.querySelector('.card[data-category="vence3"]');
     if (vence3Card) {
-      vence3Card.innerHTML = `<h2>Clientes que Vão Vencer em 3 dias</h2><p class="count">${vence3Count}</p>`;
+      vence3Card.innerHTML = `<h2>Vence em 3 dias</h2><p class="count">${vence3Count}</p>`;
     }
     const emdiasCard = document.querySelector('.card[data-category="emdias"]');
     if (emdiasCard) {
-      emdiasCard.innerHTML = `<h2>Clientes em Dias</h2><p class="count">${emdiasCount}</p>`;
+      emdiasCard.innerHTML = `<h2>Em dias</h2><p class="count">${emdiasCount}</p>`;
     }
     const custoTotalCard = document.querySelector('.card[data-category="custoTotal"]');
     if (custoTotalCard) {
@@ -445,7 +445,7 @@ async function updateDashboardCounts() {
     // Novo card: Total de Clientes
     const totalClientesCard = document.querySelector('.card[data-category="totalClientes"]');
     if (totalClientesCard) {
-      totalClientesCard.innerHTML = `<h2>Total de Clientes</h2><p class="count">${clients.length}</p>`;
+      totalClientesCard.innerHTML = `<h2>Clientes total</h2><p class="count">${clients.length}</p>`;
     }
 }
 
@@ -453,9 +453,46 @@ async function updateDashboardCounts() {
   
   // Chama a função ao carregar o DOM
   document.addEventListener('DOMContentLoaded', async () => {
-    // ... demais inicializações existentes
+    modal = document.getElementById('modal');
+    modalBody = document.getElementById('modal-body');
+    await fetchClients();
     await updateDashboardCounts();
+  
+    // Pré-carrega a tabela de "Clientes que Vão Vencer em 3 dias"
+    const filteredClients = filterVence3(clients);
+    displayClientsTable(filteredClients, "Clientes que Vão Vencer em 3 dias");
+  
+    // Eventos dos cards do dashboard
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', async () => {
+        const category = card.getAttribute('data-category');
+        await fetchClients(); // Atualiza a lista de clientes
+        let filteredClients = [];
+        let title = '';
+        
+        if (category === 'vencidos') {
+          filteredClients = filterVencidos(clients);
+          title = "Clientes Vencidos";
+        } else if (category === 'vence3') {
+          filteredClients = filterVence3(clients);
+          title = "Clientes que Vão Vencer em 3 dias";
+        } else if (category === 'emdias') {
+          filteredClients = filterEmDias(clients);
+          title = "Clientes em Dias";
+        } else if (category === 'totalClientes') {
+          filteredClients = clients;
+          title = "Total de Clientes";
+        } else if (category === 'cadastro') {
+          displayRegistrationForm();
+          return;
+        }
+        
+        // Exibe a tabela com os clientes filtrados
+        displayClientsTable(filteredClients, title);
+      });
+    });
   });
+  
   
 
   window.displayRegistrationForm = function() {

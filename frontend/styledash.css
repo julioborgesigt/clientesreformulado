@@ -19,6 +19,8 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    min-height: 1200px;
+    max-width: 1200px;
   }
   @media (max-width: 768px) {
     .container {
@@ -37,15 +39,16 @@
   justify-content: center;
   gap: 20px;
   margin-top: 20px;
+  
 }
   
   /* Atualização dos estilos para os cards */
 /* Estilização dos cards */
 .card {
   background: rgba(255, 255, 255, 0.9); /* branco com leve transparência */
-  color: #333; /* texto escuro para bom contraste */
+  color: #130029; /* texto escuro para bom contraste */
   padding: 10px;
-  width: 200px;
+  width: 180px;
   height: 120px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
@@ -110,9 +113,12 @@
   }
   
   .card .count {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: bold;
-    margin: 0;
+    margin-top: 30px;
+    color: #218838;
+    text-align: right;
+    
   }
   
   
@@ -379,12 +385,10 @@ button.sub-1:hover {
 
  @media screen and (max-width: 768px) {
   #table-container {
-    max-width: 280px; 
-      margin-top: 30px;
-      overflow-x: scroll; /* força a exibição da barra */
-      -webkit-overflow-scrolling: touch; /* rolagem suave em iOS */
-      scrollbar-gutter: stable; /* reserva espaço para a scrollbar (propriedade experimental) */
-  
+    width: 100%; /* ocupa toda a largura disponível */
+    /* Remova o max-width para não restringir demais o container */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
  } 
@@ -392,8 +396,9 @@ button.sub-1:hover {
 /* Estilização da tabela */
 #table-container table {
   width: 100%;
-  
+  min-width: 1140px; /* mantém o tamanho mínimo da tabela para que o scroll apareça */
   scrollbar-gutter: stable;
+  
 }
 
 
