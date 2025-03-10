@@ -375,21 +375,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', async () => {
       const category = card.getAttribute('data-category');
-      await fetchClients();
+      await fetchClients(); // Atualiza a lista de clientes
+      let filteredClients = [];
+      let title = '';
+      
       if (category === 'vencidos') {
-        const vencidos = filterVencidos(clients);
-        displayClientsModal(vencidos, "Clientes Vencidos");
+        filteredClients = filterVencidos(clients);
+        title = "Clientes Vencidos";
       } else if (category === 'vence3') {
-        const vence3 = filterVence3(clients);
-        displayClientsModal(vence3, "Clientes que Vão Vencer em 3 dias");
+        filteredClients = filterVence3(clients);
+        title = "Clientes que Vão Vencer em 3 dias";
       } else if (category === 'emdias') {
-        const emdias = filterEmDias(clients);
-        displayClientsModal(emdias, "Clientes em Dias");
+        filteredClients = filterEmDias(clients);
+        title = "Clientes em Dias";
+      } else if (category === 'totalClientes') {
+        filteredClients = clients;
+        title = "Total de Clientes";
       } else if (category === 'cadastro') {
+        // Caso o usuário queira cadastrar, você pode exibir o formulário de cadastro
         displayRegistrationForm();
+        return;
       }
+      
+      // Exibe a tabela com os clientes filtrados
+      displayClientsTable(filteredClients, title);
     });
   });
+  
 });
 // Função para atualizar os cards da tela inicial com a quantidade de clientes
 // Função para atualizar os cards da tela inicial com as contagens e totais
@@ -500,4 +512,65 @@ async function updateDashboardCounts() {
       }
     });
   };
+  
+
+
+
+  function displayClientsTable(clientList, title) {
+    // Cria a estrutura básica da tabela
+    let tableHtml = `<h2>${title}</h2>`;
+    tableHtml += `<table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Vencimento</th>
+          <th>Serviço</th>
+          <th>WhatsApp</th>
+          <th>Observações</th>
+          <th>Valor Cobrado</th>
+          <th>Custo</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>`;
+    
+    // Para cada cliente, gera uma linha com os dados e outra com os botões de ação
+    clientList.forEach(client => {
+      tableHtml += `<tr>
+        <td>${client.id}</td>
+        <td>${client.name}</td>
+        <td>${client.vencimento.split('-').reverse().join('-')}</td>
+        <td>${client.servico}</td>
+        <td>${client.whatsapp}</td>
+        <td>${client.observacoes}</td>
+        <td>R$${parseFloat(client.valor_cobrado).toFixed(2)}</td>
+        <td>R$${parseFloat(client.custo).toFixed(2)}</td>
+        <td>${client.status || 'N/A'}</td>
+      </tr>`;
+      // Linha adicional para os botões de ação
+      tableHtml += `<tr>
+        <td colspan="9">
+          <div class="button-group">
+            <button class="pendente" onclick="markAsPending(${client.id})">Pag. pendente</button>
+            <button class="cobranca" onclick="markAsPaid(${client.id})">Cobrança feita</button>
+            <button class="em-dias" onclick="markAsInDay(${client.id})">Pag. em dias</button>
+            <button class="editar" onclick="showEditForm(${client.id}, '${client.name}', '${client.vencimento}', '${client.servico}', '${client.whatsapp}', '${client.observacoes}', ${client.valor_cobrado}, ${client.custo})">Editar</button>
+            <button class="whatsapp" onclick="sendWhatsAppMessage('${client.whatsapp}', ${client.id})">WhatsApp</button>
+            <button class="add-1M" onclick="adjustDate(${client.id}, 1, 'MONTH')">+1m</button>
+            <button class="sub-1M" onclick="adjustDate(${client.id}, -1, 'MONTH')">-1m</button>
+            <button class="add-1" onclick="adjustDate(${client.id}, 1, 'DAY')">+1d</button>
+            <button class="sub-1" onclick="adjustDate(${client.id}, -1, 'DAY')">-1d</button>
+            <button class="excluir" onclick="deleteClient(${client.id})">Excluir</button>
+          </div>
+        </td>
+      </tr>`;
+    });
+    
+    tableHtml += `</tbody></table>`;
+    
+    // Insere o HTML gerado no container da tabela
+    document.getElementById('table-container').innerHTML = tableHtml;
+  }
+  
   
