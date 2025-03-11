@@ -149,7 +149,7 @@ async function updateDashboardCounts() {
   }
   const previstoCard = document.querySelector('.card[data-category="previsto"]');
   if (previstoCard) {
-    previstoCard.innerHTML = `<h2>Este mês</h2><p class="count">R$${valorPrevisto.toFixed(2)}</p>`;
+    previstoCard.innerHTML = `<h2>Resto(mês)</h2><p class="count">R$${valorPrevisto.toFixed(2)}</p>`;
   }
 }
 
