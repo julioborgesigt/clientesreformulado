@@ -489,6 +489,7 @@ function getPredictedPaymentsData() {
   return labels.map(() => Math.floor(Math.random() * 20) + 1);
 }
 
+
 async function renderChart() {
   try {
     const response = await fetch('clientes/pagamentos/dias');
