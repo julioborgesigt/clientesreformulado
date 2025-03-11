@@ -11,24 +11,26 @@
     padding: 20px;
   }
   
+ /* Container principal */
+.container {
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 1200px;
+}
+
+/* Responsividade do container */
+@media (max-width: 768px) {
   .container {
-    
-    margin: 0 auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    min-height: 1200px;
-    max-width: 1200px;
+    padding: 10px;
+    width: 95%;
+    /* Remova o max-width restritivo para telas pequenas */
+    max-width: 100%;
   }
-  @media (max-width: 768px) {
-    .container {
-      padding: 10px;
-      width: 95%;
-      max-width: 320px;
-    }
-  }
+}
   
   /* Cards */
   /* Estilização dos cards na tela inicial */
@@ -602,11 +604,11 @@ button.excluir {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  border-radius: 10px; /* Bordas arredondadas */
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .navbar-left,
-.navbar-center,
 .navbar-right {
   display: flex;
   align-items: center;
@@ -623,6 +625,32 @@ button.excluir {
   font-weight: bold;
   transition: background-color 0.3s, color 0.3s;
   cursor: pointer;
+}
+
+.navbar a:hover,
+.navbar button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* Responsividade para a Navbar */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+    
+  }
+  .navbar-left,
+  .navbar-right {
+    width: 100%;
+    justify-content: center;
+    margin: 5px 0;
+  }
+  .navbar a,
+  .navbar button {
+    font-size: 0.65rem; /* Ajuste o valor conforme sua necessidade */
+    padding: 0;
+  }
 }
 
 .navbar a:hover,
@@ -659,20 +687,7 @@ body.dark-mode #searchInput {
 }
 
 
-/* Responsividade para a Navbar */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    text-align: center;
-  }
-  .navbar-left,
-  .navbar-center,
-  .navbar-right {
-    width: 100%;
-    justify-content: center;
-    margin: 5px 0;
-  }
-}
+
 /* Outras regras já existentes permanecem */
 
 /* Estilo para o container que envolve os cards e o gráfico */
