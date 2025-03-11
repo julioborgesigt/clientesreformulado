@@ -207,7 +207,7 @@ body {
   }
   
   .card {
-    width: 90px; /* Aproximadamente 2 por linha (ajuste conforme necessário) */
+    width: 105px; /* Aproximadamente 2 por linha (ajuste conforme necessário) */
     margin: 5px;  /* Espaçamento entre os cartões */
   }
 }
