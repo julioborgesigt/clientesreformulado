@@ -625,12 +625,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', async () => {
       const category = card.getAttribute('data-category');
-      sessionStorage.setItem('currentCategory', category);
       
-      // Para os cards de "custoTotal", "valorApurado" e "lucro", não altera a tabela
+      // Se for um dos cards que não devem alterar nada, sai imediatamente.
       if (category === 'custoTotal' || category === 'valorApurado' || category === 'lucro') {
         return;
       }
+      
+      sessionStorage.setItem('currentCategory', category);
       
       await fetchClients();
       let filteredClients = [];
@@ -653,6 +654,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       displayClientsTable(filteredClients, title);
     });
   });
+  
   
   // Evento para o campo de pesquisa
   const searchInput = document.getElementById('searchInput');
