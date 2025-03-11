@@ -198,7 +198,7 @@ router.put('/adjust-date/:id', (req, res) => {
         db.query('SELECT vencimento FROM clientes WHERE id = ?', [id], (err, results) => {
             if (err) return res.status(500).json({ error: 'Erro ao buscar data ajustada.' });
             const formattedDate = results[0].vencimento.toISOString().split('T')[0];
-            res.status(200).json({ message: `Data ajustada com sucesso!`, vencimento: formattedDate });
+            res.status(200).json({ message: `Data ajustada com sucesso!`, vencimento: formattedDate});
         });
     });
 });

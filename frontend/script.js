@@ -421,6 +421,7 @@ window.sendWhatsAppMessage = async function(whatsapp, clientId) {
       return;
     }
     const vencimentoDate = new Date(vencimento);
+    vencimentoDate.setDate(vencimentoDate.getDate() + 1);
     const formattedDate = vencimentoDate.toLocaleDateString('pt-BR');
     const message = `${data.message} Vencimento: ${formattedDate}`;
     const whatsappLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
