@@ -7,16 +7,25 @@
   <link rel="stylesheet" href="styledash.css">
 </head>
 <body>
-   <div class="container">
+  <div class="container">
+    <!-- Navbar permanece como antes -->
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="#" id="registerLink">Cadastrar Cliente</a>
+        <a href="#" id="editMessageLink">Editar Mensagem Padrão</a>
+      </div>
+      <div class="navbar-center">
+        <button id="darkModeToggle">Modo Escuro</button>
+      </div>
+      <div class="navbar-right">
+        <button id="logoutButton">Logout</button>
+      </div>
+    </nav>
 
-    <div class="cards-container">
-      
-       <div class="cards-container">
-         <!-- Seus cards existentes -->
-         <div class="card" data-category="cadastro">
-            <h2>Cadastro</h2>
-            <h4><p>Clique para cadastrar novos cliente</p></h4>
-         </div>
+    <!-- Nova seção com cards e gráfico -->
+    <div class="cardmaisgrafico">
+      <div class="cards-container">
+         <!-- Cards informativos -->
          <div class="card" data-category="custoTotal">
             <h2>Custo Total</h2>
             <p class="count"></p>
@@ -45,34 +54,37 @@
             <h2>Clientes em Dias</h2>
             <p class="count"></p>
          </div>
-        
- 
-     </div>
-     <!-- Campo de pesquisa -->
-     <div id="search-container">
-            
-      <input type="text" id="searchInput" placeholder="Pesquisa por nome do cliente">
-   </div>
-     <!-- Novo container para exibir a tabela dos clientes -->
-     <div id="table-container">
-       <!-- A tabela será inserida aqui dinamicamente -->
-     </div>
-      
-      
-
-      <!-- Modal para exibição dos clientes ou formulário de cadastro -->
-      <div id="modal" class="modal">
-         <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <div id="modal-body">
-               <!-- Conteúdo carregado dinamicamente -->
-            </div>
-         </div>
       </div>
 
-
-
-   </div>
+      <!-- Área do gráfico -->
+      <div class="grafico">
+         <canvas id="myChart"></canvas>
+      </div>
+    </div>
+    
+    <!-- Campo de pesquisa -->
+    <div id="search-container">
+      <input type="text" id="searchInput" placeholder="Pesquisa por nome do cliente">
+    </div>
+    
+    <!-- Container para exibir a tabela -->
+    <div id="table-container">
+      <!-- A tabela será inserida dinamicamente -->
+    </div>
+    
+    <!-- Modal para exibição dos formulários -->
+    <div id="modal" class="modal">
+       <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <div id="modal-body">
+             <!-- Conteúdo carregado dinamicamente -->
+          </div>
+       </div>
+    </div>
+  </div>
+  
+  <!-- Biblioteca Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

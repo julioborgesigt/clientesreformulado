@@ -48,8 +48,8 @@
   background: rgba(255, 255, 255, 0.9); /* branco com leve transparência */
   color: #130029; /* texto escuro para bom contraste */
   padding: 10px;
-  width: 180px;
-  height: 120px;
+  width: 145px;
+  height: 80px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   cursor: default;
@@ -113,9 +113,9 @@
   }
   
   .card .count {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
-    margin-top: 30px;
+    margin-top: 0px;
     color: #218838;
     text-align: right;
     
@@ -539,5 +539,171 @@ button.excluir {
   #searchInput {
     padding: 8px 12px;
     font-size: 0.9rem;
+  }
+}
+/* Estilo para o formulário de edição de mensagem padrão */
+#edit-message-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px auto;
+  max-width: 500px; /* Largura máxima para desktops */
+  width: 90%; /* Largura responsiva */
+}
+
+#edit-message-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+#edit-message-form button {
+  align-self: flex-end;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#edit-message-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Adaptações para dispositivos móveis */
+@media (max-width: 768px) {
+  #edit-message-form {
+    max-width: 100%;
+  }
+  
+  #edit-message-form textarea {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+  
+  #edit-message-form button {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+}
+/* Estilos para a Navbar */
+/* Navbar customizada */
+.navbar {
+  background: #007bff;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  border-radius: 10px; /* Bordas arredondadas */
+}
+
+.navbar-left,
+.navbar-center,
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar a,
+.navbar button {
+  color: white;
+  text-decoration: none;
+  padding: 8px 15px;
+  margin: 0 5px;
+  border: none;
+  background-color: transparent;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+.navbar a:hover,
+.navbar button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  
+}
+
+/* Modo escuro - estilos aplicados quando o body tiver a classe "dark-mode" */
+body.dark-mode {
+  background-color: #333;
+  color: #eee;
+}
+
+body.dark-mode .container {
+  background-color: #444;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .navbar {
+  background: #555;
+}
+
+body.dark-mode .navbar a,
+body.dark-mode .navbar button {
+  color: #ddd;
+}
+
+body.dark-mode #searchInput {
+  background-color: #555;
+  color: #eee;
+  border-color: #777;
+}
+
+
+/* Responsividade para a Navbar */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    text-align: center;
+  }
+  .navbar-left,
+  .navbar-center,
+  .navbar-right {
+    width: 100%;
+    justify-content: center;
+    margin: 5px 0;
+  }
+}
+/* Outras regras já existentes permanecem */
+
+/* Estilo para o container que envolve os cards e o gráfico */
+.cardmaisgrafico {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+
+/* Estilo para a área do gráfico */
+.grafico {
+  flex: 1 1 300px;
+  min-height: 300px;
+  /* Centraliza o conteúdo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ajuste para que o canvas ocupe a maior parte da área do gráfico */
+.grafico canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .cardmaisgrafico {
+    flex-direction: column;
   }
 }
