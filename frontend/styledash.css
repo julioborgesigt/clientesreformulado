@@ -1,601 +1,35 @@
 /* Reset e estilos básicos */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    padding: 20px;
-  }
-  
- /* Container principal */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+/* Container principal */
 .container {
   margin: 0 auto;
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   text-align: center;
   max-width: 1200px;
 }
 
-/* Responsividade do container */
 @media (max-width: 768px) {
   .container {
     padding: 10px;
     width: 95%;
-    /* Remova o max-width restritivo para telas pequenas */
     max-width: 100%;
   }
 }
-  
-  /* Cards */
-  /* Estilização dos cards na tela inicial */
-/* Container dos cards */
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-  
-}
-  
-  /* Atualização dos estilos para os cards */
-/* Estilização dos cards */
-.card {
-  background: rgba(255, 255, 255, 0.9); /* branco com leve transparência */
-  color: #130029; /* texto escuro para bom contraste */
-  padding: 10px;
-  width: 145px;
-  height: 80px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  cursor: default;
-  text-align: left; /* alinha o texto à esquerda */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  font-size: 0.9rem; /* fonte menor */
-  border: 2px solid transparent;
-  transition: box-shadow 0.3s, border 0.3s;
-}
 
-/* Animação para efeito de borda cintilante */
-@keyframes borderShimmer {
-  0% {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  }
-  50% {
-    border-color: #00aaff;
-    box-shadow: 0 0 15px rgba(0, 123, 255, 1);
-  }
-  100% {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  }
-}
-
-.card:hover {
-  transform: none; /* remove qualquer efeito ao passar o mouse */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* mantém a mesma sombra */
-}
-
-/* Ajuste para dispositivos móveis */
-@media (max-width: 768px) {
-  .card {
-    width: 90%; /* ocupa a maior parte da largura disponível */
-    height: auto;
-  }
-}
-
-
-
-/* Aplicar efeito cintilante no hover para os cards especificados */
-.card[data-category="vencidos"]:hover,
-.card[data-category="vence3"]:hover,
-.card[data-category="emdias"]:hover,
-.card[data-category="totalClientes"]:hover {
-  animation: borderShimmer 1s infinite;
-}
-
-/* Garantir que outros cards não tenham efeito hover */
-.card:not([data-category="vencidos"]):not([data-category="vence3"]):not([data-category="emdias"]):not([data-category="cadastro"]):not([data-category="totalClientes"]):hover {
-  transform: none;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-  
-  .card h2 {
-    margin-bottom: 10px;
-    font-size: 20px;
-  }
-  
-  .card .count {
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 0px;
-    color: #218838;
-    text-align: right;
-    
-  }
-  
-  
-  /* Modal */
-  .modal {
-    display: none; /* Oculto por padrão */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-  }
-  
-  .modal-content {
-    background-color: #fefefe;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 800px;
-    position: relative;
-  }
-  
-  .close-btn {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .close-btn:hover,
-  .close-btn:focus {
-    color: black;
-  }
-  
-  /* Exibição dos clientes no modal – layout horizontal */
-  .client-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 10px;
-    background-color: #f9f9f9;
-  }
-  
-  .client-details {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-  }
-  
-  /* Estilização das linhas de botões dentro de .client-actions */
-/* Atualiza a estilização dos botões de ajuste */
-.client-actions .button-row {
-    display: flex;
-    gap: 5px;
-    justify-content: space-between;
-    margin-top: 10px;
-  }
-  
-  .client-actions .button-row button {
-    flex: 1; /* Cada botão ocupa espaço igual */
-    min-width: 0;
-    padding: 8px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  
-  /* Exemplo de estilos para cada botão */
-  button.pendente {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  button.cobranca {
-    background-color: #ff9800;
-    color: white;
-  }
-  
-  button.em-dias {
-    background-color: #1E7E34;
-    color: white;
-  }
-  
-  button.editar {
-    background-color: #b8b8b8;
-    color: white;
-  }
-  
-  button.whatsapp {
-    background-color: #25d366;
-    color: white;
-  }
-  
-  button.excluir {
-    background-color: #d32f2f;
-    color: white;
-  }
-  
-/* Estilo para todos os botões de ajuste */
-button.add-1M,
-button.sub-1M,
-button.add-1,
-button.sub-1 {
-  background-color: #4d4b4b;
-  color: #fff;
-}
-
-button.add-1M:hover,
-button.sub-1M:hover,
-button.add-1:hover,
-button.sub-1:hover {
-  background-color: #3d3c3c;
-}
-
-  
-  
-  /* Formulário de Cadastro no modal */
-  #registration-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    text-align: left;
-  }
-  
-  #registration-form input,
-  #registration-form textarea {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  #registration-form button {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-
-
-/* Formulários de Cadastro e Edição no modal */
-#edit-form, 
-[id^="edit-form-"] { /* Seleciona qualquer ID que comece com "edit-form-" */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  text-align: left;
-}
-
-/* Inputs e Textareas */
-#edit-form input, 
-#edit-form textarea, 
-[id^="edit-form-"] input, 
-[id^="edit-form-"] textarea {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%;
-}
-
-/* Labels */
-#edit-form label, 
-[id^="edit-form-"] label {
-  font-weight: bold;
-  margin-top: 5px;
-}
-
-/* Botões */
-#edit-form button, 
-[id^="edit-form-"] button {
-  padding: 10px;
-  font-size: 16px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-#edit-form button:hover, 
-[id^="edit-form-"] button:hover {
-  background-color: #218838;
-}
-
-
-  
-  /* Responsividade */
-  @media (max-width: 768px) {
-    .cards-container {
-      flex-direction: column;
-      align-items: center;
-    }
-    .client-card {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  }
-  /* Estilos para os botões de ajuste de data */
-.client-adjust {
-    margin-top: 10px;
-    display: flex;
-    gap: 5px;
-    justify-content: center;
-  }
-  
-  .client-adjust button {
-    padding: 8px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: #4d4b4b;
-    color: #fff;
-    transition: background-color 0.3s ease;
-  }
-  
-  .client-adjust button:hover {
-    background-color: #3d3c3c;
-  }
-  
-/* Container da tabela com scrollbar forçada e espaço reservado */
-#table-container {
-  margin-top: 30px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  
-}
-
-/* Personalização da barra de rolagem para navegadores WebKit (Chrome, Safari, etc.) */
-#table-container::-webkit-scrollbar {
-  height: 8px;
-}
-
-#table-container::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-#table-container::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-#table-container::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
- @media screen and (max-width: 768px) {
-  #table-container {
-    width: 100%; /* ocupa toda a largura disponível */
-    /* Remova o max-width para não restringir demais o container */
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
- } 
-
-/* Estilização da tabela */
-#table-container table {
-  width: 100%;
-  min-width: 1140px; /* mantém o tamanho mínimo da tabela para que o scroll apareça */
-  scrollbar-gutter: stable;
-  
-}
-
-
-@media (max-width: 768px) {
-  /* Remove a largura mínima e força o layout fixo para distribuir o espaço igualmente */
-  #table-container table {
-    width: auto;
-    min-width: 800px; /* defina o valor conforme sua necessidade */
-    table-layout: auto; /* permite que a tabela mantenha seu layout original */
-  }
-  
-  /* Permite que o conteúdo das células quebre quando necessário */
-  #table-container th,
-  #table-container td {
-    word-wrap: break-word;
-    white-space: normal;
-  }
-}
-
-
-
-
-#table-container th, 
-#table-container td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-  font-size: 0.9rem;
-}
-
-#table-container tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-#table-container tr:hover {
-  background-color: #f1f1f1;
-}
-
-#table-container th {
-  background-color: #007bff;
-  color: white;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-
-/* Estilização para o grupo de botões dentro da tabela */
-.button-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin: 5px 0;
-}
-
-.button-group button {
-  padding: 5px 10px;
-  font-size: 0.8rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-@media (max-width: 768px) {
-  .button-group button {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-  }
-}
-
-
-
-/* Estilos para os botões, mantendo as cores já utilizadas */
-button.pendente {
-  background-color: #f44336;
-  color: white;
-}
-button.cobranca {
-  background-color: #ff9800;
-  color: white;
-}
-button.em-dias {
-  background-color: #1E7E34;
-  color: white;
-}
-button.editar {
-  background-color: #b8b8b8;
-  color: white;
-}
-button.whatsapp {
-  background-color: #25d366;
-  color: white;
-}
-button.add-1M,
-button.sub-1M,
-button.add-1,
-button.sub-1 {
-  background-color: #4d4b4b;
-  color: white;
-}
-button.excluir {
-  background-color: #d32f2f;
-  color: white;
-}
-/* Estilo para o container do campo de pesquisa */
-#search-container {
-  margin: 20px auto;
-  width: 100%;
-  max-width: 300px; /* largura máxima para desktops */
-  max-height: 40px;
-  padding: 0 10px;
-  display: flex;
-  justify-content: center;
-}
-
-/* Estilo para o input de pesquisa */
-#searchInput {
-  width: 100%;
-  padding: 10px 15px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 25px;
-  transition: border-color 0.3s ease;
-}
-
-#searchInput:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-/* Adaptações para dispositivos móveis */
-@media (max-width: 768px) {
-  #search-container {
-    max-width: 100%;
-    padding: 0 10px;
-  }
-  
-  #searchInput {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-}
-/* Estilo para o formulário de edição de mensagem padrão */
-#edit-message-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 20px auto;
-  max-width: 500px; /* Largura máxima para desktops */
-  width: 90%; /* Largura responsiva */
-}
-
-#edit-message-form textarea {
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  resize: vertical;
-  min-height: 100px;
-}
-
-#edit-message-form button {
-  align-self: flex-end;
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#edit-message-form button:hover {
-  background-color: #0056b3;
-}
-
-/* Adaptações para dispositivos móveis */
-@media (max-width: 768px) {
-  #edit-message-form {
-    max-width: 100%;
-  }
-  
-  #edit-message-form textarea {
-    font-size: 0.9rem;
-    padding: 8px;
-  }
-  
-  #edit-message-form button {
-    font-size: 0.9rem;
-    padding: 8px 16px;
-  }
-}
-/* Estilos para a Navbar */
 /* Navbar customizada */
 .navbar {
   background: #007bff;
@@ -633,12 +67,21 @@ button.excluir {
   border-radius: 4px;
 }
 
-/* Responsividade para a Navbar */
 @media (max-width: 768px) {
+  
+  .navbar a,
+  .navbar button {
+   
+    font-size: 0.75rem;
+  }
+
+}
+
+
+@media (max-width: 400px) {
   .navbar {
     flex-direction: column;
     text-align: center;
-    
   }
   .navbar-left,
   .navbar-right {
@@ -648,49 +91,73 @@ button.excluir {
   }
   .navbar a,
   .navbar button {
-    font-size: 0.65rem; /* Ajuste o valor conforme sua necessidade */
+    font-size: 0.70rem;
     padding: 0;
   }
 }
 
-.navbar a:hover,
-.navbar button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+/* Botão de toggle para a sidebar (oculto em telas maiores) */
+.menu-toggle {
+  display: none; /* exibido apenas em dispositivos móveis */
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  padding: 10px;
   border-radius: 4px;
+  z-index: 1100;
+}
+
+/* Estilos para dispositivos móveis */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
   
+  /* Navbar transformada em sidebar */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Oculta a sidebar fora da tela */
+    width: 250px;
+    height: 100%;
+    background: #007bff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+    flex-direction: column;
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+  
+  /* Classe que torna a sidebar visível */
+  .navbar.show {
+    left: 0;
+  }
+  
+  /* Ajusta os itens internos da navbar */
+  .navbar a,
+  .navbar button {
+    font-size: 1rem;
+    padding: 8px 10px;
+    margin: 5px 0;
+  }
+  
+  .navbar-left,
+  .navbar-right {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
 }
 
-/* Modo escuro - estilos aplicados quando o body tiver a classe "dark-mode" */
-body.dark-mode {
-  background-color: #333;
-  color: #eee;
-}
-
-body.dark-mode .container {
-  background-color: #444;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-}
-
-body.dark-mode .navbar {
-  background: #555;
-}
-
-body.dark-mode .navbar a,
-body.dark-mode .navbar button {
-  color: #ddd;
-}
-
-body.dark-mode #searchInput {
-  background-color: #555;
-  color: #eee;
-  border-color: #777;
-}
 
 
 
-/* Outras regras já existentes permanecem */
 
-/* Estilo para o container que envolve os cards e o gráfico */
+/* Cards e gráfico */
 .cardmaisgrafico {
   display: flex;
   flex-wrap: wrap;
@@ -699,26 +166,393 @@ body.dark-mode #searchInput {
   margin-bottom: 20px;
 }
 
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 10px;
+  justify-content: center; /* Alinha os itens ao centro */
+}
 
-/* Estilo para a área do gráfico */
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  color: #130029;
+  padding: 10px;
+  width: 120px;
+  height: 80px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  cursor: default;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: 0.9rem;
+  border: 2px solid transparent;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+
+
+
+ /* Responsividade */
+ @media (max-width: 400px) {
+  .cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .client-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@keyframes borderShimmer {
+  0% {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+  }
+  50% {
+    border-color: #00aaff;
+    box-shadow: 0 0 15px rgba(0,123,255,1);
+  }
+  100% {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+  }
+}
+
+.card:hover {
+  transform: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.card[data-category="vencidos"]:hover,
+.card[data-category="vence3"]:hover,
+.card[data-category="emdias"]:hover,
+.card[data-category="totalClientes"]:hover {
+  animation: borderShimmer 1s infinite;
+}
+
+.card:not([data-category="vencidos"]):not([data-category="vence3"]):not([data-category="emdias"]):not([data-category="cadastro"]):not([data-category="totalClientes"]):hover {
+  transform: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.card h2 {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.card .count {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 0;
+  color: #218838;
+  text-align: right;
+}
+
+/* Área do gráfico */
 .grafico {
   flex: 1 1 300px;
   min-height: 300px;
-  /* Centraliza o conteúdo */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Ajuste para que o canvas ocupe a maior parte da área do gráfico */
 .grafico canvas {
   max-width: 100%;
   max-height: 100%;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
   .cardmaisgrafico {
     flex-direction: column;
+  }
+}
+
+
+
+/* Campo de pesquisa */
+#search-container {
+  margin: 20px auto;
+  width: 100%;
+  max-width: 300px;
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  transition: border-color 0.3s ease;
+}
+
+#searchInput:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 800px;
+  position: relative;
+}
+
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+}
+
+/* Tabela */
+#table-container {
+  margin-top: 30px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+#table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#table-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+#table-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media screen and (max-width: 768px) {
+  #table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+#table-container table {
+  width: 100%;
+  min-width: 1140px;
+  scrollbar-gutter: stable;
+}
+
+@media (max-width: 768px) {
+  #table-container table {
+    width: auto;
+    min-width: 800px;
+    table-layout: auto;
+  }
+  #table-container th,
+  #table-container td {
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+#table-container th, 
+#table-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+#table-container tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#table-container tr:hover {
+  background-color: #f1f1f1;
+}
+
+#table-container th {
+  background-color: #007bff;
+  color: white;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+/* Grupo de botões na tabela */
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 5px 0;
+}
+
+.button-group button {
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+@media (max-width: 768px) {
+  .button-group button {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+button.pendente {
+  background-color: #f44336;
+  color: white;
+}
+
+button.cobranca {
+  background-color: #ff9800;
+  color: white;
+}
+
+button.em-dias {
+  background-color: #1E7E34;
+  color: white;
+}
+
+button.editar {
+  background-color: #b8b8b8;
+  color: white;
+}
+
+button.whatsapp {
+  background-color: #25d366;
+  color: white;
+}
+
+button.add-1M,
+button.sub-1M,
+button.add-1,
+button.sub-1 {
+  background-color: #4d4b4b;
+  color: white;
+}
+
+button.excluir {
+  background-color: #d32f2f;
+  color: white;
+}
+
+/* Formulário de Cadastro e Edição */
+#registration-form,
+#edit-form, [id^="edit-form-"] {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+#registration-form input,
+#registration-form textarea,
+#edit-form input,
+#edit-form textarea,
+[id^="edit-form-"] input,
+[id^="edit-form-"] textarea {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+#registration-form button,
+#edit-form button, [id^="edit-form-"] button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#edit-form button:hover,
+[id^="edit-form-"] button:hover {
+  background-color: #218838;
+}
+
+/* Formulário de edição de mensagem padrão */
+#edit-message-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px auto;
+  max-width: 500px;
+  width: 90%;
+}
+
+#edit-message-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+#edit-message-form button {
+  align-self: flex-end;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#edit-message-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsividade para o campo de pesquisa */
+@media (max-width: 768px) {
+  #search-container {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  #searchInput {
+    padding: 8px 12px;
+    font-size: 0.9rem;
   }
 }

@@ -8,14 +8,16 @@
 </head>
 <body>
   <div class="container">
-    <!-- Navbar permanece como antes -->
+   
+    <!-- Botão para abrir/fechar a sidebar em dispositivos móveis -->
+    <button id="menuToggle" class="menu-toggle">☰</button>
+    
+    <!-- Navbar -->
     <nav class="navbar">
       <div class="navbar-left">
         <a href="#" id="registerLink">Cadastrar Cliente</a>
         <a href="#" id="editMessageLink">Editar Mensagem Padrão</a>
-        <button id="darkModeToggle">Modo Escuro</button>
       </div>
-      
       <div class="navbar-right">
         <button id="logoutButton">Logout</button>
       </div>
@@ -35,6 +37,11 @@
          </div>
          <div class="card" data-category="lucro">
             <h2>Lucro</h2>
+            <p class="count"></p>
+         </div>
+         <!-- Novo card para valor previsto -->
+         <div class="card" data-category="previsto">
+            <h2>Valor Previsto</h2>
             <p class="count"></p>
          </div>
          <div class="card" data-category="totalClientes">

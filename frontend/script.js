@@ -2,7 +2,7 @@
 let clients = [];
 let modal, modalBody;
 let chart;  // Variável para o gráfico
-let bsModal; // Modal usando nosso método (se for customizado, senão usa modal.style)
+let bsModal; // Caso use modal customizado
 
 // Função para buscar clientes do backend
 async function fetchClients() {
@@ -88,13 +88,37 @@ async function updateData() {
 async function updateDashboardCounts() {
   await fetchClients();
   
-  const vencidosCount = filterVencidos(clients).length;
+  // Obter a data de hoje (em formato YYYY-MM-DD)
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  
+  // Calcular o último dia do mês corrente (formato YYYY-MM-DD)
+  const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const endOfMonthStr = endOfMonth.toISOString().split('T')[0];
+  
+  // Filtrar os clientes previstos até o final do mês (vencimento entre hoje e fim do mês)
+  const predictedClients = clients.filter(client => {
+    return client.vencimento >= todayStr && client.vencimento <= endOfMonthStr;
+  });
+  
+  // Para os cálculos de receita e lucro, considere apenas clientes com vencimento a partir de hoje
+  const validClients = clients.filter(client => client.vencimento >= todayStr);
+  
+  // Calcular os valores (você pode manter suas funções de filtragem para vencidos, vence3 e em dias se desejar)
+  const vencidosCount = clients.filter(client => client.vencimento < todayStr).length;
+  
+  // Exemplo: se você já tem funções filterVence3 e filterEmDias que trabalham com datas,
+  // certifique-se de que elas usem o mesmo formato (por exemplo, comparando strings) ou converta para números.
   const vence3Count = filterVence3(clients).length;
   const emdiasCount = filterEmDias(clients).length;
-  const custoTotal = clients.reduce((sum, client) => sum + parseFloat(client.custo), 0);
-  const valorApurado = clients.reduce((sum, client) => sum + parseFloat(client.valor_cobrado), 0);
+  
+  const custoTotal = validClients.reduce((sum, client) => sum + parseFloat(client.custo), 0);
+  const valorApurado = validClients.reduce((sum, client) => sum + parseFloat(client.valor_cobrado), 0);
   const lucro = valorApurado - custoTotal;
   
+  const valorPrevisto = predictedClients.reduce((sum, client) => sum + parseFloat(client.valor_cobrado), 0);
+  
+  // Atualiza os cards
   const vencidosCard = document.querySelector('.card[data-category="vencidos"]');
   if (vencidosCard) {
     vencidosCard.innerHTML = `<h2>Vencidos</h2><p class="count">${vencidosCount}</p>`;
@@ -123,7 +147,14 @@ async function updateDashboardCounts() {
   if (totalClientesCard) {
     totalClientesCard.innerHTML = `<h2>Nº Clientes</h2><p class="count">${clients.length}</p>`;
   }
+  const previstoCard = document.querySelector('.card[data-category="previsto"]');
+  if (previstoCard) {
+    previstoCard.innerHTML = `<h2>Este mês</h2><p class="count">R$${valorPrevisto.toFixed(2)}</p>`;
+  }
 }
+
+
+
 
 // Funções de ações
 window.adjustDate = async function(clientId, value, unit) {
@@ -247,112 +278,9 @@ window.editClient = async function(clientId) {
   }
 };
 
-window.hideEditForm = function() {
-  modal.style.display = 'none';
-};
 
-window.sendWhatsAppMessage = async function(whatsapp, clientId) {
-  try {
-    const response = await fetch('/clientes/get-message');
-    const data = await response.json();
-    if (!response.ok) {
-      alert('Nenhuma mensagem padrão foi configurada.');
-      return;
-    }
-    const vencimento = await getClientVencimento(clientId);
-    if (!vencimento) {
-      alert('Data de vencimento não encontrada.');
-      return;
-    }
-    const vencimentoDate = new Date(vencimento);
-    const formattedDate = vencimentoDate.toLocaleDateString('pt-BR');
-    const message = `${data.message} Vencimento: ${formattedDate}`;
-    const whatsappLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappLink, '_blank');
-  } catch (error) {
-    console.error('Erro ao enviar mensagem pelo WhatsApp:', error);
-    alert('Erro ao enviar mensagem pelo WhatsApp.');
-  }
-};
+// Eventos de formulários e da navbar
 
-// Funções de filtragem
-function filterVencidos(clients) {
-  const today = new Date().setHours(0, 0, 0, 0);
-  return clients.filter(client => {
-    const venc = new Date(client.vencimento).setHours(0, 0, 0, 0);
-    return venc < today;
-  });
-}
-
-function filterVence3(clients) {
-  const today = new Date();
-  const threeDaysLater = new Date();
-  threeDaysLater.setDate(today.getDate() + 3);
-  return clients.filter(client => {
-    const venc = new Date(client.vencimento);
-    return venc >= today && venc <= threeDaysLater;
-  });
-}
-
-function filterEmDias(clients) {
-  const today = new Date().setHours(0, 0, 0, 0);
-  const threeDaysLater = new Date();
-  threeDaysLater.setDate(new Date().getDate() + 3);
-  threeDaysLater.setHours(0, 0, 0, 0);
-  return clients.filter(client => {
-    const venc = new Date(client.vencimento).setHours(0, 0, 0, 0);
-    return venc > threeDaysLater;
-  });
-}
-
-// Função auxiliar para remover acentuação (para pesquisa)
-function removeAccents(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
-
-// Funções para renderizar o gráfico
-function getDaysInCurrentMonth() {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const days = new Date(year, month + 1, 0).getDate();
-  const labels = [];
-  for (let i = 1; i <= days; i++) {
-    labels.push(i.toString());
-  }
-  return labels;
-}
-
-function getPredictedPaymentsData() {
-  const labels = getDaysInCurrentMonth();
-  return labels.map(() => Math.floor(Math.random() * 20) + 1);
-}
-
-function renderChart() {
-  const ctx = document.getElementById('myChart').getContext('2d');
-  const labels = getDaysInCurrentMonth();
-  const data = getPredictedPaymentsData();
-  if (chart) chart.destroy();
-  chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Previsão de Pagamentos',
-        data: data,
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false
-    }
-  });
-}
-
-// Função para exibir o formulário de cadastro
 window.displayRegistrationForm = function() {
   modalBody.innerHTML = `
     <h2>Cadastro de Cliente</h2>
@@ -409,7 +337,6 @@ window.displayRegistrationForm = function() {
   });
 };
 
-// Função para exibir o formulário de edição da mensagem padrão do WhatsApp
 window.displayEditMessageForm = async function() {
   try {
     const response = await fetch('/clientes/get-message');
@@ -451,7 +378,6 @@ window.displayEditMessageForm = async function() {
   }
 };
 
-// Função para exibir o formulário de edição de cliente
 window.showEditForm = function(clientId, name, vencimento, servico, whatsapp, observacoes, valor_cobrado, custo) {
   const editHtml = `
     <h3>Editar Cliente</h3>
@@ -514,24 +440,29 @@ function filterVencidos(clients) {
   });
 }
 
+function getTodayString() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function getThreeDaysLaterString() {
+  const date = new Date();
+  date.setDate(date.getDate() + 3);
+  return date.toISOString().split('T')[0];
+}
+
 function filterVence3(clients) {
-  const today = new Date();
-  const threeDaysLater = new Date();
-  threeDaysLater.setDate(today.getDate() + 3);
+  const todayStr = getTodayString();
+  const threeDaysLaterStr = getThreeDaysLaterString();
   return clients.filter(client => {
-    const venc = new Date(client.vencimento);
-    return venc >= today && venc <= threeDaysLater;
+    // Considera que client.vencimento já está no formato "YYYY-MM-DD"
+    return client.vencimento >= todayStr && client.vencimento <= threeDaysLaterStr;
   });
 }
 
 function filterEmDias(clients) {
-  const today = new Date().setHours(0, 0, 0, 0);
-  const threeDaysLater = new Date();
-  threeDaysLater.setDate(new Date().getDate() + 3);
-  threeDaysLater.setHours(0, 0, 0, 0);
+  const threeDaysLaterStr = getThreeDaysLaterString();
   return clients.filter(client => {
-    const venc = new Date(client.vencimento).setHours(0, 0, 0, 0);
-    return venc > threeDaysLater;
+    return client.vencimento > threeDaysLaterStr;
   });
 }
 
@@ -558,42 +489,48 @@ function getPredictedPaymentsData() {
   return labels.map(() => Math.floor(Math.random() * 20) + 1);
 }
 
-function renderChart() {
-  const ctx = document.getElementById('myChart').getContext('2d');
-  const labels = getDaysInCurrentMonth();
-  const data = getPredictedPaymentsData();
-  if (chart) chart.destroy();
-  chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Previsão de Pagamentos',
-        data: data,
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false
-    }
-  });
+async function renderChart() {
+  try {
+    const response = await fetch('clientes/pagamentos/dias');
+    const result = await response.json();
+    const labels = result.days;
+    const data = result.payments;
+    
+    console.log("Dados do gráfico:", labels, data);
+    
+    if (chart) chart.destroy();
+    const ctx = document.getElementById('myChart').getContext('2d');
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Previsão de Pagamentos',
+          data: data,
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+  } catch (error) {
+    console.error('Erro ao renderizar o gráfico:', error);
+  }
 }
 
-// Carregamento Inicial
+// Carregamento Inicial e eventos
 document.addEventListener('DOMContentLoaded', async () => {
   modal = document.getElementById('modal');
   modalBody = document.getElementById('modal-body');
   
   await fetchClients();
   await updateDashboardCounts();
-  
-  // Renderiza o gráfico na área designada
   renderChart();
   
-  // Recupera o filtro atual salvo (ou usa 'vence3' como padrão)
   let currentCategory = sessionStorage.getItem('currentCategory') || 'vence3';
   
   if (currentCategory === 'vencidos') {
@@ -608,7 +545,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     displayRegistrationForm();
   }
   
-  // Eventos para fechar o modal com confirmação
+  // Fechar modal com confirmação
   document.querySelector('.close-btn').addEventListener('click', () => {
     modal.style.display = 'none';
   });
@@ -621,18 +558,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
   
-  // Eventos dos cards do dashboard
+  // Eventos dos cards
   document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', async () => {
       const category = card.getAttribute('data-category');
       
-      // Se for um dos cards que não devem alterar nada, sai imediatamente.
-      if (category === 'custoTotal' || category === 'valorApurado' || category === 'lucro') {
+      // Se for um dos cards que não devem alterar a tabela, saia imediatamente
+      if (category === 'custoTotal' || category === 'valorApurado' || category === 'lucro' || category === 'previsto') {
         return;
       }
       
       sessionStorage.setItem('currentCategory', category);
-      
       await fetchClients();
       let filteredClients = [];
       let title = '';
@@ -654,7 +590,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       displayClientsTable(filteredClients, title);
     });
   });
-  
   
   // Evento para o campo de pesquisa
   const searchInput = document.getElementById('searchInput');
@@ -681,20 +616,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 
-// Função de Modo Escuro
-document.getElementById('darkModeToggle').addEventListener('click', function() {
-  document.body.classList.toggle('dark-mode');
-  if (document.body.classList.contains('dark-mode')) {
-    this.textContent = 'Modo Claro';
-  } else {
-    this.textContent = 'Modo Escuro';
-  }
-});
 
 // Função de Logout
 document.getElementById('logoutButton').addEventListener('click', function() {
   if (confirm('Deseja realmente sair?')) {
     sessionStorage.clear();
     window.location.href = '/'; // Altere para a rota de login ou logout da sua aplicação
+  }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const menuToggle = document.getElementById('menuToggle');
+  const navbar = document.querySelector('.navbar');
+  if (menuToggle && navbar) {
+    menuToggle.addEventListener('click', () => {
+      navbar.classList.toggle('show');
+    });
   }
 });

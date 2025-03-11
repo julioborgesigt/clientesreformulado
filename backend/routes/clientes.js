@@ -223,3 +223,31 @@ router.put('/mark-in-day/:id', (req, res) => {
 });
 
 
+
+
+router.get('/pagamentos/dias', (req, res) => {
+    const query = `
+      SELECT DAY(vencimento) AS day, COUNT(*) AS count
+      FROM clientes
+      GROUP BY DAY(vencimento)
+      ORDER BY day
+    `;
+    
+    db.query(query, (err, results) => {
+      if (err) return res.status(500).json({ error: 'Erro ao buscar dados para o gráfico.' });
+      
+      // Cria um array de 31 posições (dias do mês), iniciando com 0
+      const payments = Array(31).fill(0);
+      
+      // Para cada dia encontrado, atualiza a contagem (ajuste o índice, pois DAY(vencimento) varia de 1 a 31)
+      results.forEach(row => {
+        payments[row.day - 1] = row.count;
+      });
+      
+      // Cria os rótulos de 1 a 31
+      const labels = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
+      
+      res.status(200).json({ days: labels, payments: payments });
+    });
+  });
+  
