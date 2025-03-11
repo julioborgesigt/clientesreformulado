@@ -203,6 +203,7 @@ body {
     flex-wrap: wrap; /* Permite que os itens "quebrem" em múltiplas linhas */
     justify-content: center; /* Centraliza os itens horizontalmente */
     /* Remova qualquer flex-direction: column que esteja forçando o empilhamento */
+    height: auto;
   }
   
   .card {
