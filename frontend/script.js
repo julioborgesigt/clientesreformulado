@@ -635,3 +635,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+
+document.getElementById('registerLink').addEventListener('click', (e) => {
+  e.preventDefault();
+  // Remove a classe "show" para ocultar a sidebar
+  document.querySelector('.navbar').classList.remove('show');
+  displayRegistrationForm();
+});
+
+document.getElementById('editMessageLink').addEventListener('click', (e) => {
+  e.preventDefault();
+  document.querySelector('.navbar').classList.remove('show');
+  displayEditMessageForm();
+});

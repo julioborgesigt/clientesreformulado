@@ -105,7 +105,7 @@ body {
   background-color: #007bff;
   color: white;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1rem;
   padding: 10px;
   border-radius: 4px;
   z-index: 1100;
@@ -122,10 +122,10 @@ body {
     position: fixed;
     top: 0;
     left: -250px; /* Oculta a sidebar fora da tela */
-    width: 250px;
+    width: 150px;
     height: 100%;
     background: #007bff;
-    padding: 20px;
+    padding: 10px;
     box-shadow: 2px 0 5px rgba(0,0,0,0.3);
     flex-direction: column;
     transition: left 0.3s ease;
@@ -140,7 +140,7 @@ body {
   /* Ajusta os itens internos da navbar */
   .navbar a,
   .navbar button {
-    font-size: 1rem;
+    font-size: 0.8rem;
     padding: 8px 10px;
     margin: 5px 0;
   }
@@ -150,6 +150,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    margin-top: 80px;
   }
 }
 
