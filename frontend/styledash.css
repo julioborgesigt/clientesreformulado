@@ -232,6 +232,11 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
+.card.active {
+  background-color: #007bff; /* Azul */
+  color: white;
+}
+
 .card[data-category="vencidos"]:hover,
 .card[data-category="vence3"]:hover,
 .card[data-category="emdias"]:hover,
@@ -253,7 +258,7 @@ body {
   font-size: 16px;
   font-weight: bold;
   margin-top: 0;
-  color: #218838;
+  color: #882121;
   text-align: right;
 }
 

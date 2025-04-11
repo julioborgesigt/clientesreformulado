@@ -433,12 +433,13 @@ window.sendWhatsAppMessage = async function(whatsapp, clientId) {
 };
 
 // Funções de filtragem
+function getTodayString() {
+  return new Date().toISOString().split('T')[0];
+}
+
 function filterVencidos(clients) {
-  const today = new Date().setHours(0, 0, 0, 0);
-  return clients.filter(client => {
-    const venc = new Date(client.vencimento).setHours(0, 0, 0, 0);
-    return venc < today;
-  });
+  const todayStr = getTodayString();
+  return clients.filter(client => client.vencimento < todayStr);
 }
 
 function getTodayString() {
@@ -650,4 +651,26 @@ document.getElementById('editMessageLink').addEventListener('click', (e) => {
   e.preventDefault();
   document.querySelector('.navbar').classList.remove('show');
   displayEditMessageForm();
+});
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const cards = document.querySelectorAll('.card');
+
+  cards.forEach(card => {
+    const nonClickable = ['custoTotal', 'valorApurado', 'lucro', 'previsto'];
+    const category = card.getAttribute('data-category');
+
+    // Só adiciona o evento de clique se o card não estiver na lista de ignorados
+    if (!nonClickable.includes(category)) {
+      card.addEventListener('click', () => {
+        cards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      });
+    } else {
+      // Opcional: muda o cursor para indicar que não é clicável
+      card.style.cursor = 'default';
+    }
+  });
 });
