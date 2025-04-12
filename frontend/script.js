@@ -4,6 +4,9 @@ let modal, modalBody;
 let chart;  // Variável para o gráfico
 let bsModal; // Caso use modal customizado
 
+
+
+
 // Função para buscar clientes do backend
 async function fetchClients() {
   try {
@@ -13,6 +16,10 @@ async function fetchClients() {
     console.error('Erro ao buscar clientes:', error);
   }
 }
+
+
+
+
 
 // Função para exibir a tabela de clientes
 function displayClientsTable(clientList, title) {
@@ -34,21 +41,27 @@ function displayClientsTable(clientList, title) {
     <tbody>`;
   
   clientList.forEach(client => {
+    const statusClass =
+    client.status === 'Não pagou' ? 'status-pendente' :
+    client.status === 'cobrança feita' ? 'status-cobrança-feita' :
+    client.status === 'Pag. em dias' ? 'status-em-dias' : '';
     tableHtml += `<tr>
       <td>${client.id}</td>
-      <td>${client.name}</td>
+      <td style="width: 200px;">${client.name}</td>
       <td>${client.vencimento.split('-').reverse().join('-')}</td>
       <td>${client.servico}</td>
       <td>${client.whatsapp}</td>
       <td>${client.observacoes}</td>
       <td>R$${parseFloat(client.valor_cobrado).toFixed(2)}</td>
       <td>R$${parseFloat(client.custo).toFixed(2)}</td>
-      <td>${client.status || 'N/A'}</td>
+      <td class="status ${statusClass}" style="width: 150px; text-align: center;">
+        <strong> ${client.status || 'N/A'} </strong>
+      </ts>
     </tr>
     <tr>
       <td colspan="9">
         <div class="button-group">
-          <button class="pendente" onclick="markAsPending(${client.id})">Pag. pendente</button>
+          <button class="pendente" onclick="markAsPending(${client.id})">Não pagou</button>
           <button class="cobranca" onclick="markAsPaid(${client.id})">Cobrança feita</button>
           <button class="em-dias" onclick="markAsInDay(${client.id})">Pag. em dias</button>
           <button class="editar" onclick="showEditForm(${client.id}, '${client.name}', '${client.vencimento}', '${client.servico}', '${client.whatsapp}', '${client.observacoes}', ${client.valor_cobrado}, ${client.custo})">Editar</button>
@@ -171,6 +184,12 @@ window.adjustDate = async function(clientId, value, unit) {
     }
     const data = await response.json();
     alert(data.message);
+
+    // ✅ Se adicionou 1 mês, já marca como "Pag. em dias"
+    if (unit === 'MONTH' && value > 0) {
+      await fetch(`/clientes/mark-in-day/${clientId}`, { method: 'PUT' });
+    }
+
     await updateData();
   } catch (error) {
     console.error('Erro ao ajustar a data:', error);
@@ -178,11 +197,12 @@ window.adjustDate = async function(clientId, value, unit) {
   }
 };
 
+
 window.markAsPending = async function(id) {
   try {
     const response = await fetch(`/clientes/mark-pending/${id}`, { method: 'PUT' });
     const data = await response.json();
-    alert(data.message);
+    
     await updateData();
   } catch (error) {
     console.error('Erro ao atualizar status:', error);
@@ -194,13 +214,21 @@ window.markAsPaid = async function(id) {
   try {
     const response = await fetch(`/clientes/mark-paid/${id}`, { method: 'PUT' });
     const data = await response.json();
-    alert(data.message);
+    
     await updateData();
+
+    // 👉 Força o estilo laranja no status após atualização
+    const statusCell = document.querySelector(`tr td:nth-child(9):has(~ tr td button.cobranca[onclick*="${id}"])`);
+    if (statusCell) {
+      statusCell.style.backgroundColor = '#ffe4b5';
+      statusCell.style.color = '#ff8c00';
+    }
   } catch (error) {
     console.error('Erro ao atualizar status:', error);
     alert('Erro ao marcar como cobrança feita.');
   }
 };
+
 
 window.markAsInDay = async function(id) {
   try {
@@ -211,7 +239,7 @@ window.markAsInDay = async function(id) {
       return;
     }
     const data = await response.json();
-    alert(data.message);
+  
     await updateData();
   } catch (error) {
     console.error('Erro ao atualizar status:', error);

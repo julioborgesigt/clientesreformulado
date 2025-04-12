@@ -289,7 +289,7 @@ body {
     font-size: 14px;
     font-weight: bold;
     margin-top: 0;
-    color: #218838;
+    color: #882121;
     text-align: right;
   }
 }
@@ -578,4 +578,24 @@ button.excluir {
     padding: 8px 12px;
     font-size: 0.9rem;
   }
+}
+
+
+
+.status-cobrança-feita {
+  background-color: #ffe4b5;
+  color: #ff8c00;
+  border: 1px solid #ff8c00;
+}
+
+.status-pendente {
+  background-color: #ffcccc;
+  color: #d00000;
+  border: 1px solid #d00000;
+}
+
+.status-em-dias {
+  background-color: #b3e4bf;
+  color: #3ac45a;
+  border: 1px solid #3ac45a;
 }

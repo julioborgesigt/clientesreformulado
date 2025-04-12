@@ -63,7 +63,7 @@ router.put('/update/:id', (req, res) => {
 
 router.put('/mark-pending/:id', (req, res) => {
     const { id } = req.params;
-    db.query('UPDATE clientes SET status = "Pag. cobrado" WHERE id = ?', [id], (err) => {
+    db.query('UPDATE clientes SET status = "Não pagou" WHERE id = ?', [id], (err) => {
         if (err) return res.status(500).json({ error: 'Erro ao atualizar status' });
         res.status(200).json({ message: 'Cliente marcado como pagamento pendente' });
     });
